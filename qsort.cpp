@@ -1,7 +1,8 @@
 // Ejemplo de QuickSort
 #include <stdlib.h>
 #include <stdio.h>
-
+#include <string>       //string
+#include "file.cpp"
 
 void par_qsort(int *data, int lo, int hi) 
 {
@@ -34,6 +35,8 @@ void par_qsort(int *data, int lo, int hi)
 
 
 int main (int argc, char *argv[]){
+  FileHandler file;
+
   int thread_num = 1;
   if (argc == 1) {
       printf("Hace falta el tamanio n de la lista\n");
@@ -44,28 +47,36 @@ int main (int argc, char *argv[]){
   }
   const int n = atoi(argv[1]);
 
-  //int *x;
-  int x[n];
-  int j;
+  //allocate the array
+  int *arr = (int *)malloc(n * sizeof(int));
+  file.n = n;
+  file.writeToFile();
+  file.openFile();
 
-  //---- Asignación de memoria para el vector x ----
-  ///if ( (x=(int *)malloc(N*sizeof(int))) == NULL )
-   ///printf("memory allocation for x");
+  int j;
+  while (j < n) {
+    int numero = stoi(file.result[j]);  //Debemos convertir el string a int
+    arr[j] = numero;
+    j += 1;
+  }
 
   //---- Inicialización con elementos aleatorios entre 1-N/2
   //TODO aca leer de archivo CSV, generando random para ejemplo
   printf("Generando lista random con %d elementos\n", n);
-  int posibles_elementos = n/2;
-  for (j=0; j<n; j++) {
-    // Generando numero aleatorio y guardandolo en el array
-    x[j] = rand()%(posibles_elementos)+1;
-  }
 
   // Recibe lista, 0, cantidad de elementos
-  par_qsort(x, 0, n-1);
+  par_qsort(arr, 0, n-1);
+  
 
-  printf("Primeros Elementos: %d, %d, %d\n", x[0], x[1], x[2]);
-  printf("Medios Elementos: %d, %d, %d\n", x[n/4], x[n/4 +1], x[n/4 +2]);
-  printf("Ultimos Elementos: %d, %d, %d\n", x[n-3], x[n-2], x[n-1]);
+  printf("Primeros Elementos: %d, %d, %d\n", arr[0], arr[1], arr[2]);
+  printf("Medios Elementos: %d, %d, %d\n", arr[n/4], arr[n/4 +1], arr[n/4 +2]);
+  printf("Ultimos Elementos: %d, %d, %d\n", arr[n-3], arr[n-2], arr[n-1]);
+  
+
+  file.writeOutput(arr);
+
+  //deallocate the array
+  delete[] arr;
+
   return 0;
 }
