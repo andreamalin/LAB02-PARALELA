@@ -1,6 +1,8 @@
 // Ejemplo de QuickSort
 #include <stdlib.h>
 #include <stdio.h>
+#include <omp.h>
+
 #include <string>       //string
 #include "file.cpp"
 
@@ -35,6 +37,7 @@ void par_qsort(int *data, int lo, int hi)
 
 
 int main (int argc, char *argv[]){
+  double t_init = omp_get_wtime();
   FileHandler file;
 
   int thread_num = 1;
@@ -60,18 +63,17 @@ int main (int argc, char *argv[]){
     j += 1;
   }
 
-  //---- Inicialización con elementos aleatorios entre 1-N/2
-  //TODO aca leer de archivo CSV, generando random para ejemplo
-  printf("Generando lista random con %d elementos\n", n);
 
   // Recibe lista, 0, cantidad de elementos
   par_qsort(arr, 0, n-1);
   
 
-  printf("Primeros Elementos: %d, %d, %d\n", arr[0], arr[1], arr[2]);
-  printf("Medios Elementos: %d, %d, %d\n", arr[n/4], arr[n/4 +1], arr[n/4 +2]);
-  printf("Ultimos Elementos: %d, %d, %d\n", arr[n-3], arr[n-2], arr[n-1]);
-  
+  double t_fin = omp_get_wtime();
+  double delta = t_fin - t_init;
+
+  printf("\nCon n threads = %d y con lista n = %d",thread_num, n);
+  printf("\n\nCon tiempo = %f",delta);
+  printf("\nCon precision = %f", omp_get_wtick());
 
   file.writeOutput(arr);
 
