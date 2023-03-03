@@ -10,6 +10,8 @@
         "xlocale": "cpp",
         "iostream": "cpp",
         "ostream": "cpp",
-        "vector": "cpp"
+        "vector": "cpp",
+        "atomic": "cpp",
+        "memory": "cpp"
     }
 }
