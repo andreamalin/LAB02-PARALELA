@@ -81,8 +81,6 @@ class FileHandler {
                 {
                     escribirNumeros<<x[i]<<",";
                     // cout << "Num: " << omp_get_thread_num() << "\n";
-                    cout << "\n";
-                    cout << x[i];
                 }
             }
             

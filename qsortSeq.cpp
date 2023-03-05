@@ -4,7 +4,7 @@
 #include <omp.h>
 
 #include <string>       //string
-#include "file.cpp"
+#include "fileParallel.cpp"
 
 void par_qsort(int *data, int lo, int hi) 
 {
@@ -46,28 +46,31 @@ int main (int argc, char *argv[]){
       exit (1);
   } else if (argc == 2) {
       printf("Warning: Hace falta la cantidad de threads\n");
-      thread_num = atoi(argv[2]);
+      thread_num = 1;
+  } else {
+    // Si si viene tomamos su valor, de lo contrario sera 1
+    thread_num = atoi(argv[2]);
   }
   const int n = atoi(argv[1]);
 
   //allocate the array
   int *arr = (int *)malloc(n * sizeof(int));
   file.n = n;
+  file.amount_threads = thread_num;
   file.writeToFile();
   file.openFile();
 
-  int j;
+  int j = 0;
+
   while (j < n) {
     int numero = stoi(file.result[j]);  //Debemos convertir el string a int
     arr[j] = numero;
     j += 1;
   }
 
-
   // Recibe lista, 0, cantidad de elementos
   par_qsort(arr, 0, n-1);
   
-
   double t_fin = omp_get_wtime();
   double delta = t_fin - t_init;
 

@@ -4,7 +4,7 @@
 #include <omp.h>
 
 #include <string>       //string
-#include "file.cpp"
+#include "fileParallel.cpp"
 
 void par_qsort(int *data, int lo, int hi) 
 {
@@ -58,10 +58,11 @@ int main (int argc, char *argv[]){
   //allocate the array
   int *arr = (int *)malloc(n * sizeof(int));
   file.n = n;
+  file.amount_threads = thread_num;
   file.writeToFile();
   file.openFile();
 
-  int j;
+  int j = 0;
   while (j < n) {
     int numero = stoi(file.result[j]);  //Debemos convertir el string a int
     arr[j] = numero;
